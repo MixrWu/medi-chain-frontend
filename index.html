@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediChain Lite dApp</title>
+
+    <!-- Bootstrap 5 -->
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+    >
+
+    <style>
+        body {
+            background-color: #f5f7fb;
+        }
+        .card {
+            border-radius: 1rem;
+        }
+        .record-card {
+            border-left: 4px solid #0d6efd;
+        }
+        .badge-time {
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-dark bg-primary mb-4">
+    <div class="container">
+        <span class="navbar-brand mb-0 h1">MediChain Lite</span>
+        <button id="connectBtn" class="btn btn-light btn-sm">
+            🔗 連接 MetaMask
+        </button>
+    </div>
+</nav>
+
+<div class="container mb-5">
+    <!-- 連線狀態 -->
+    <div class="alert alert-secondary" id="accountBox">
+        尚未連接錢包
+    </div>
+
+    <div class="row g-4">
+        <!-- 查詢病歷 -->
+        <div class="col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">查詢病患紀錄</h5>
+
+                    <div class="mb-3">
+                        <button id="querySelfBtn" class="btn btn-outline-primary btn-sm">
+                            查詢自己的病歷
+                        </button>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="otherPatientAddress" class="form-label">
+                            查詢其他病患病歷（限被授權醫生）
+                        </label>
+                        <div class="input-group">
+                            <input
+                                    id="otherPatientAddress"
+                                    class="form-control"
+                                    placeholder="輸入病患錢包地址"
+                            >
+                            <button id="queryOtherBtn" class="btn btn-primary">
+                                查詢
+                            </button>
+                        </div>
+                    </div>
+
+                    <hr>
+                    <h6 class="text-muted">查詢結果</h6>
+                    <div id="recordsContainer" class="mt-2"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 授權與新增病歷 -->
+        <div class="col-lg-6">
+            <!-- 授權醫生 -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">授權醫生讀取病歷（病患）</h5>
+
+                    <div class="mb-3">
+                        <label for="doctorAddress" class="form-label">醫生錢包地址</label>
+                        <input
+                                id="doctorAddress"
+                                class="form-control"
+                                placeholder="0x 開頭的地址"
+                        >
+                    </div>
+
+                    <button id="grantBtn" class="btn btn-success">
+                        授權醫生
+                    </button>
+                    <p id="grantStatus" class="mt-2 text-muted small"></p>
+                </div>
+            </div>
+
+            <!-- 新增病歷 -->
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">新增病歷（醫生）</h5>
+
+                    <div class="mb-3">
+                        <label for="newPatient" class="form-label">病患錢包地址</label>
+                        <input
+                                id="newPatient"
+                                class="form-control"
+                                placeholder="0x 開頭的地址"
+                        >
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="newDoctor" class="form-label">醫生名稱</label>
+                        <input
+                                id="newDoctor"
+                                class="form-control"
+                                placeholder="例如：林大同醫師"
+                        >
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="newDiagnosis" class="form-label">診斷內容</label>
+                        <input
+                                id="newDiagnosis"
+                                class="form-control"
+                                placeholder="例如：偏頭痛、上呼吸道感染…"
+                        >
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="newNote" class="form-label">備註 / 醫囑</label>
+                        <textarea
+                                id="newNote"
+                                class="form-control"
+                                rows="3"
+                                placeholder="用藥建議、生活指導、追蹤時間等"
+                        ></textarea>
+                    </div>
+
+                    <button id="addRecordBtn" class="btn btn-primary">
+                        新增病歷
+                    </button>
+                    <p id="addStatus" class="mt-2 text-muted small"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/ethers@6.6.0/dist/ethers.umd.min.js"></script>
+<script src="abi.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
