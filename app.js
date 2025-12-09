@@ -136,10 +136,17 @@ document.getElementById("grantBtn").onclick = async () => {
     const doctor = document.getElementById("doctorAddress").value;
     const status = document.getElementById("grantStatus");
 
-    if (!window.contract) {
+    if (!window.contract || !window.signerAddress) {
         status.textContent = "請先連接錢包";
         return;
     }
+
+    // ❌ 禁止把自己授權給自己
+    if (doctor.toLowerCase() === window.signerAddress.toLowerCase()) {
+        status.textContent = "❌ 你不能授權自己！";
+        return;
+    }
+
     if (!ethers.isAddress(doctor)) {
         status.textContent = "請輸入合法的醫生錢包地址";
         return;
